@@ -2,4 +2,56 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="purple">#D4C4E3</color>
+    <color name="darkPurple">#9387F5</color>
+    <color name="blue">#a8daf0</color>
+    <color name="peach">#f0c390</color>
+    <color name="green">#c3f09c</color>
+    <color name="orangeRed">#f3722c</color>
+    <color name="yellowOrange">#78961e</color>
+    <color name="MangoTango">#f9844a</color>
+    <color name="MaizeCrayola">#f9c74f</color>
+    <color name="card_purple">#8690b1</color>
+    <color name="card_yellow">#ffcc00</color>
+    <color name="card_red">#ff3b30</color>
+    <color name="card_violet">#ff9500</color>
+    <color name="card_blue">#5ac8fa</color>
+    <color name="card_green">#34c759</color>
+
+
+    <!--    <array name="arr_colors">-->
+    <!--        <item>#FF0000</item>-->
+    <!--        <item>#00FF00</item>-->
+    <!--        <item>#0000FF</item>-->
+    <!--        <item>#FFFF00</item>-->
+    <!--        <item>#FF00FF</item>-->
+    <!--        <item>#00FFFF</item>-->
+    <!--        <item>#FFA500</item>-->
+    <!--        <item>#A52A2A</item>-->
+    <!--        <item>#800080</item>-->
+    <!--        <item>#008000</item>-->
+    <!--        <item>#000000</item>-->
+    <!--        <item>#FFFFFF</item>-->
+    <!--    </array>-->
+
+    <array name="color_picker">
+        <item>@color/white</item>
+        <item>@color/card_purple</item>
+        <item>@color/card_yellow</item>
+        <item>@color/card_red</item>
+        <item>@color/card_violet</item>
+        <item>@color/card_blue</item>
+        <item>@color/card_green</item>
+        <item>@color/peach</item>
+        <item>@color/green</item>
+        <item>@color/purple</item>
+        <item>@color/darkPurple</item>
+        <item>@color/blue</item>
+        <item>@color/orange</item>
+        <item>@color/red</item>
+        <item>@color/yellowOrange</item>
+        <item>@color/MangoTango</item>
+        <item>@color/MaizeCrayola</item>
+    </array>
 </resources>
