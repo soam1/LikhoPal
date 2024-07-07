@@ -18,6 +18,8 @@
     <color name="card_violet">#ff9500</color>
     <color name="card_blue">#5ac8fa</color>
     <color name="card_green">#34c759</color>
+    <color name="orange">#ffa500</color>
+    <color name="red">#ff4040</color>
 
 
     <!--    <array name="arr_colors">-->

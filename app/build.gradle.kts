@@ -89,7 +89,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
 //    color picker library
-    implementation("com.thebluealliance:spectrum:1.4.0")
+    implementation("com.thebluealliance:spectrum:0.7.1")
 
 
     implementation("io.github.yahiaangelo.markdownedittext:markdownedittext:1.1.3")
