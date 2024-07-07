@@ -93,7 +93,7 @@ dependencies {
 
 
     implementation("io.github.yahiaangelo.markdownedittext:markdownedittext:1.1.3")
-    implementation("io.noties.markwon:core:4.7.1")
-    implementation("io.noties.markwon:ext-strikethrough:4.7.1")
-    implementation("io.noties.markwon:ext-tasklist:4.7.1")
+    implementation("io.noties.markwon:core:4.6.2")
+    implementation("io.noties.markwon:ext-strikethrough:4.6.2")
+    implementation("io.noties.markwon:ext-tasklist:4.6.2")
 }
