@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 //    id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
-//    id("androidx.navigation.safeargs.kotlin")
-    id("androidx.navigation.safeargs")
+    id("androidx.navigation.safeargs.kotlin")
+//    id("androidx.navigation.safeargs")
+
 }
 
 android {

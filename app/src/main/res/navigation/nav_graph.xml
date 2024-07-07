@@ -9,7 +9,7 @@
         android:id="@+id/noteFragment"
         android:name="com.example.notesapp.fragments.NoteFragment"
         android:label="fragment_note"
-        tools:layout="@layout/fragment_note" >
+        tools:layout="@layout/fragment_note">
         <action
             android:id="@+id/action_noteFragment_to_saveOrUpdateFragment"
             app:destination="@id/saveOrUpdateFragment" />
@@ -18,9 +18,16 @@
         android:id="@+id/saveOrUpdateFragment"
         android:name="com.example.notesapp.fragments.SaveOrUpdateFragment"
         android:label="fragment_save_or_update"
-        tools:layout="@layout/fragment_save_or_update" >
+        tools:layout="@layout/fragment_save_or_update">
         <action
             android:id="@+id/action_saveOrUpdateFragment_to_noteFragment"
             app:destination="@id/noteFragment" />
+
+
+        <argument
+            android:name="note"
+            android:defaultValue="@null"
+            app:argType="com.example.notesapp.model.Note"
+            app:nullable="true" />
     </fragment>
 </navigation>

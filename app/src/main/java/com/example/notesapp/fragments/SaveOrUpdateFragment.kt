@@ -1,60 +1,151 @@
 package com.example.notesapp.fragments
 
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.notesapp.R
+import com.example.notesapp.activities.MainActivity
+import com.example.notesapp.databinding.FragmentSaveOrUpdateBinding
+import com.example.notesapp.model.Note
+import com.example.notesapp.utils.hideKeyboard
+import com.example.notesapp.viewModel.NoteActivityViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.transition.MaterialContainerTransform
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import java.text.SimpleDateFormat
+import java.util.Date
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SaveOrUpdateFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SaveOrUpdateFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
+    private lateinit var navController: NavController
+    private lateinit var contentBinding: FragmentSaveOrUpdateBinding
+    private var note: Note? = null
+    private var color = -1
+    private val noteActivityViewModel: NoteActivityViewModel by activityViewModels()
+    private val currentDate = SimpleDateFormat.getInstance().format(Date())
+    private val job = CoroutineScope(Dispatchers.Main)
+    private val args: SaveOrUpdateFragmentArgs by navArgs()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        val animation = MaterialContainerTransform().apply {
+            drawingViewId = R.id.fragment
+            scrimColor = Color.TRANSPARENT
+            duration = 300L
+
+        }
+        sharedElementEnterTransition = animation
+        sharedElementReturnTransition = animation
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        contentBinding = FragmentSaveOrUpdateBinding.bind(view)
+
+        navController = Navigation.findNavController(view)
+        val activity = activity as MainActivity
+
+        contentBinding.backBtn.setOnClickListener {
+            requireView().hideKeyboard()
+            navController.popBackStack()
+        }
+
+        contentBinding.saveNote.setOnClickListener {
+            saveNoteMethod()
+            try {
+                contentBinding.etNoteContent.setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        contentBinding.bottomBar.visibility = View.VISIBLE
+                        contentBinding.etNoteContent.setStylesBar(contentBinding.styleBar)
+                    } else
+                        contentBinding.bottomBar.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.d("SaveOrUpdateFragment", "onViewCreated: ${e.message}")
+            }
+            contentBinding.fabColorPick.setOnClickListener {
+                val bottomSheetDialog = BottomSheetDialog(
+                    requireContext(), R.style.BottomSheetDialogTheme
+                )
+                val bottomSheetView = layoutInflater.inflate(
+                    R.layout.bottom_sheet_layout, null
+                )
+                with(bottomSheetDialog) {
+                    setContentView(bottomSheetView)
+                    show()
+                }
+                val bottomSheetBinding =
+                    com.example.notesapp.databinding.BottomSheetLayoutBinding.bind(bottomSheetView)
+                bottomSheetBinding.apply {
+                    colorPicker.apply {
+                        setSelectedColor(color)
+                        setOnColorSelectedListener { value ->
+                            color = value
+                            contentBinding.apply {
+                                noteContentFragmentParent.setBackgroundColor(color)
+                                toolbarFragmentNoteContent.setBackgroundColor(color)
+                                bottomBar.setBackgroundColor(color)
+                                activity.window.statusBarColor = color
+                            }
+                            bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
+                        }
+                    }
+                    bottomSheetParent.setCardBackgroundColor(color)
+                }
+                bottomSheetView.post {
+                    bottomSheetDialog.behavior.state =
+                        com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+        }
+
+
+    }
+
+    private fun saveNoteMethod() {
+        if (contentBinding.etNoteContent.text.toString()
+                .isEmpty() || contentBinding.etTitle.text.toString()
+                .isEmpty()
+        ) {
+            Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+        note = args.note
+        when (note) {
+            null -> {
+                //save new note
+                note = Note(
+                    title = contentBinding.etTitle.text.toString(),
+                    content = contentBinding.etNoteContent.text.toString(),
+                    date = currentDate,
+                    color = color
+                )
+                noteActivityViewModel.saveNote(note!!)
+                navController.navigate(SaveOrUpdateFragmentDirections.actionSaveOrUpdateFragmentToNoteFragment())
+            }
+
+            else -> {
+
+                //update already existing note
+//                note!!.title = contentBinding.etTitle.text.toString()
+//                note!!.content = contentBinding.etNoteContent.text.toString()
+//                note!!.date = currentDate
+//                note!!.color = color
+//                noteActivityViewModel.saveNote(note!!)
+//                navController.navigate(SaveOrUpdateFragmentDirections.actionSaveOrUpdateFragmentToNoteFragment())
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_save_or_update, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SaveOrUpdateFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SaveOrUpdateFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
