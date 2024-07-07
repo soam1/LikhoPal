@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -29,6 +31,7 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
     private lateinit var contentBinding: FragmentSaveOrUpdateBinding
     private var note: Note? = null
     private var color = -1
+    private lateinit var result: String
     private val noteActivityViewModel: NoteActivityViewModel by activityViewModels()
     private val currentDate = SimpleDateFormat.getInstance().format(Date())
     private val job = CoroutineScope(Dispatchers.Main)
@@ -58,54 +61,54 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
             requireView().hideKeyboard()
             navController.popBackStack()
         }
+        contentBinding.lastEdited.text = "EditedOn: $currentDate"
 
         contentBinding.saveNote.setOnClickListener {
             saveNoteMethod()
-            try {
-                contentBinding.etNoteContent.setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus) {
-                        contentBinding.bottomBar.visibility = View.VISIBLE
-                        contentBinding.etNoteContent.setStylesBar(contentBinding.styleBar)
-                    } else
-                        contentBinding.bottomBar.visibility = View.GONE
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.d("SaveOrUpdateFragment", "onViewCreated: ${e.message}")
+        }
+        try {
+            contentBinding.etNoteContent.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    contentBinding.bottomBar.visibility = View.VISIBLE
+                    contentBinding.etNoteContent.setStylesBar(contentBinding.styleBar)
+                } else contentBinding.bottomBar.visibility = View.GONE
             }
-            contentBinding.fabColorPick.setOnClickListener {
-                val bottomSheetDialog = BottomSheetDialog(
-                    requireContext(), R.style.BottomSheetDialogTheme
-                )
-                val bottomSheetView = layoutInflater.inflate(
-                    R.layout.bottom_sheet_layout, null
-                )
-                with(bottomSheetDialog) {
-                    setContentView(bottomSheetView)
-                    show()
-                }
-                val bottomSheetBinding =
-                    com.example.notesapp.databinding.BottomSheetLayoutBinding.bind(bottomSheetView)
-                bottomSheetBinding.apply {
-                    colorPicker.apply {
-                        setSelectedColor(color)
-                        setOnColorSelectedListener { value ->
-                            color = value
-                            contentBinding.apply {
-                                noteContentFragmentParent.setBackgroundColor(color)
-                                toolbarFragmentNoteContent.setBackgroundColor(color)
-                                bottomBar.setBackgroundColor(color)
-                                activity.window.statusBarColor = color
-                            }
-                            bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("SaveOrUpdateFragment", "onViewCreated: ${e.message}")
+        }
+        contentBinding.fabColorPick.setOnClickListener {
+            val bottomSheetDialog = BottomSheetDialog(
+                requireContext(), R.style.BottomSheetDialogTheme
+            )
+            val bottomSheetView = layoutInflater.inflate(
+                R.layout.bottom_sheet_layout, null
+            )
+            with(bottomSheetDialog) {
+                setContentView(bottomSheetView)
+                show()
+            }
+            val bottomSheetBinding =
+                com.example.notesapp.databinding.BottomSheetLayoutBinding.bind(bottomSheetView)
+            bottomSheetBinding.apply {
+                colorPicker.apply {
+                    setSelectedColor(color)
+                    setOnColorSelectedListener { value ->
+                        color = value
+                        contentBinding.apply {
+                            noteContentFragmentParent.setBackgroundColor(color)
+                            toolbarFragmentNoteContent.setBackgroundColor(color)
+                            bottomBar.setBackgroundColor(color)
+                            activity.window.statusBarColor = color
                         }
+                        bottomSheetBinding.bottomSheetParent.setCardBackgroundColor(color)
                     }
-                    bottomSheetParent.setCardBackgroundColor(color)
                 }
-                bottomSheetView.post {
-                    bottomSheetDialog.behavior.state =
-                        com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-                }
+                bottomSheetParent.setCardBackgroundColor(color)
+            }
+            bottomSheetView.post {
+                bottomSheetDialog.behavior.state =
+                    com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
             }
         }
 
@@ -114,8 +117,7 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
 
     private fun saveNoteMethod() {
         if (contentBinding.etNoteContent.text.toString()
-                .isEmpty() || contentBinding.etTitle.text.toString()
-                .isEmpty()
+                .isEmpty() || contentBinding.etTitle.text.toString().isEmpty()
         ) {
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
@@ -131,6 +133,9 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
                     color = color
                 )
                 noteActivityViewModel.saveNote(note!!)
+
+                result = "Note saved"
+                setFragmentResult("key", bundleOf("bundleKey" to result))
                 navController.navigate(SaveOrUpdateFragmentDirections.actionSaveOrUpdateFragmentToNoteFragment())
             }
 
