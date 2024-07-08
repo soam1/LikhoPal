@@ -70,8 +70,8 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         noteBinding.signOutButton.setOnClickListener {
             Firebase.auth.signOut()
             findNavController().navigate(R.id.action_noteFragment_to_authFragment)
-            val fragmentManager = requireActivity().supportFragmentManager
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//            val fragmentManager = requireActivity().supportFragmentManager
+//            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
         noteBinding.addNoteFab.setOnClickListener {
