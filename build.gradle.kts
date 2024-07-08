@@ -5,6 +5,7 @@ plugins {
     //for kapt
 //    id("com.android.library") version "8.1.1" apply false
     id("androidx.navigation.safeargs") version "2.7.7" apply false
+    alias(libs.plugins.google.gms.google.services) apply false
 }
 buildscript {
     repositories {

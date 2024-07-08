@@ -16,7 +16,6 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             app:liftOnScroll="true">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -31,7 +30,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/app_title"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
                         android:layout_marginStart="2dp"
@@ -43,6 +42,16 @@
                         android:textSize="30sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/signOutButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/logout"
+                        app:layout_constraintBottom_toBottomOf="@id/app_title"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/app_title" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
