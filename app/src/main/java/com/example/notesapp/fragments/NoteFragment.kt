@@ -69,12 +69,13 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         }
         noteBinding.signOutButton.setOnClickListener {
             Firebase.auth.signOut()
-            findNavController().navigate(
-                R.id.action_noteFragment_to_authFragment, null,
-                NavOptions.Builder()
-                    .setPopUpTo(R.id.noteFragment, true)
-                    .build()
-            )
+            val navOptions = NavOptions.Builder()
+                .setPopUpTo(
+                    R.id.authFragment,
+                    true
+                ) // Replace `startDestination` with the actual ID of the start destination in your navigation graph
+                .build()
+            findNavController().navigate(R.id.action_noteFragment_to_authFragment, null, navOptions)
         }
 
         noteBinding.addNoteFab.setOnClickListener {
