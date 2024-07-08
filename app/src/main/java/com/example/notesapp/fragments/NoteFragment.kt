@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -26,6 +27,8 @@ import com.example.notesapp.viewModel.NoteActivityViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialElevationScale
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -36,6 +39,7 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
     private lateinit var noteBinding: FragmentNoteBinding
     private val noteActivityViewModel: NoteActivityViewModel by activityViewModels()
     private lateinit var rvAdapter: RvNotesAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +64,11 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
             activity.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             activity.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             activity.window.statusBarColor = Color.parseColor("#9E9D9D")
+
+        }
+        noteBinding.signOutButton.setOnClickListener {
+            Firebase.auth.signOut()
+            findNavController().navigate(R.id.action_noteFragment_to_authFragment)
 
         }
 
@@ -177,10 +186,6 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
         itemTouchHelper.attachToRecyclerView(rvNote)
-
-
-
-
 
 
     }

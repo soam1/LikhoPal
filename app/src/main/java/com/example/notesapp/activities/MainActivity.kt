@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         try {
             setContentView(binding.root)
+
             val noteRepository = NoteRepository(NoteDatabase(this))
             val noteActivityViewModelFactory = NoteActivityViewModelFactory(noteRepository)
             noteActivityViewModel = ViewModelProvider(
@@ -38,5 +39,7 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.e("MainActivity", "Error in onCreate: ${e.message}")
         }
+
     }
+
 }
