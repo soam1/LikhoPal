@@ -30,7 +30,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_centerInParent="true"
             android:background="@drawable/border"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +52,7 @@
                 android:id="@+id/signInButton"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
-                android:background="@color/yellowOrange"
+                android:background="@drawable/border"
                 android:text="Sign up with Google"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
