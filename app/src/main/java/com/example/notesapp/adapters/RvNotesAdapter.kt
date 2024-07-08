@@ -50,6 +50,8 @@ class RvNotesAdapter : ListAdapter<Note, RvNotesAdapter.NotesViewHolder>(DiffUti
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
         getItem(position).let { note ->
             holder.apply {
+
+                parent.transitionName = "recyclerView_${note.id}"
                 title.text = note.title
                 markwon.setMarkdown(content, note.content)
                 date.text = note.date

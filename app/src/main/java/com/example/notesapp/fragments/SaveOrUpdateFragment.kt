@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.ImmLeaksCleaner.FailedInitialization.lock
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
@@ -59,6 +59,11 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
 
         navController = Navigation.findNavController(view)
         val activity = activity as MainActivity
+
+        ViewCompat.setTransitionName(
+            contentBinding.noteContentFragmentParent,
+            "recyclerView_${args.note?.id}"
+        )
 
         contentBinding.backBtn.setOnClickListener {
             requireView().hideKeyboard()
@@ -123,14 +128,15 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
 
     private fun setUpNote() {
         val note = args.note
-        val title =contentBinding.etTitle
+        val title = contentBinding.etTitle
         val content = contentBinding.etNoteContent
         val lastEdited = contentBinding.lastEdited
 
-        if(note!=null){
+        if (note != null) {
             title.setText(note.title)
             content.renderMD(note.content)
             lastEdited.text = getString(R.string.edited_on, note.date)
+            color = note.color
             contentBinding.apply {
                 job.launch {
                     delay(10)
@@ -139,7 +145,7 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
                 toolbarFragmentNoteContent.setBackgroundColor(color)
                 bottomBar.setBackgroundColor(color)
             }
-            activity?.window?.statusBarColor= note.color
+            activity?.window?.statusBarColor = note.color
         }
     }
 
@@ -178,7 +184,7 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
     }
 
     private fun updateNote() {
-        if(note!=null){
+        if (note != null) {
             noteActivityViewModel.updateNote(
                 Note(
                     note!!.id,
