@@ -55,12 +55,27 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     //added dependencies
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.lifecycle.extensions)
+//    implementation(libs.androidx.legacy.support.v4)
+//    implementation(libs.androidx.lifecycle.extensions)
+//    implementation(libs.androidx.lifecycle.runtime)
     //viewmodel and livedata
+    implementation("androidx.legacy:legacy-support-v13:1.0.0")
+//    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.3")
+//    implementation("androidx.lifecycle:lifecycle-extensions:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.3")
+//
+    // Annotation processor for LiveData and ViewModel (if you're using Kotlin, kapt is not needed for LiveData/ViewModel)
+    kapt("androidx.lifecycle:lifecycle-compiler:2.8.3")
+
+    //added this to resolve .observe() error
+    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.3")
+
+
+//
+
 
     //recycler view
     implementation(libs.androidx.recyclerview)
