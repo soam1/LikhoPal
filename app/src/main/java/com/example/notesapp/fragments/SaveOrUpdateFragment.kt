@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.ImmLeaksCleaner.FailedInitialization.lock
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,6 +23,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -113,6 +116,31 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
         }
 
 
+//        opens with existing note item
+        setUpNote()
+
+    }
+
+    private fun setUpNote() {
+        val note = args.note
+        val title =contentBinding.etTitle
+        val content = contentBinding.etNoteContent
+        val lastEdited = contentBinding.lastEdited
+
+        if(note!=null){
+            title.setText(note.title)
+            content.renderMD(note.content)
+            lastEdited.text = getString(R.string.edited_on, note.date)
+            contentBinding.apply {
+                job.launch {
+                    delay(10)
+                    noteContentFragmentParent.setBackgroundColor(color)
+                }
+                toolbarFragmentNoteContent.setBackgroundColor(color)
+                bottomBar.setBackgroundColor(color)
+            }
+            activity?.window?.statusBarColor= note.color
+        }
     }
 
     private fun saveNoteMethod() {
@@ -141,14 +169,25 @@ class SaveOrUpdateFragment : Fragment(R.layout.fragment_save_or_update) {
 
             else -> {
 
-                //update already existing note
-//                note!!.title = contentBinding.etTitle.text.toString()
-//                note!!.content = contentBinding.etNoteContent.text.toString()
-//                note!!.date = currentDate
-//                note!!.color = color
-//                noteActivityViewModel.saveNote(note!!)
-//                navController.navigate(SaveOrUpdateFragmentDirections.actionSaveOrUpdateFragmentToNoteFragment())
+//                update already existing note
+                updateNote()
+                navController.popBackStack()
+
             }
+        }
+    }
+
+    private fun updateNote() {
+        if(note!=null){
+            noteActivityViewModel.updateNote(
+                Note(
+                    note!!.id,
+                    contentBinding.etTitle.text.toString(),
+                    contentBinding.etNoteContent.getMD(),
+                    currentDate,
+                    color
+                )
+            )
         }
     }
 

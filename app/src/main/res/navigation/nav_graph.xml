@@ -21,8 +21,8 @@
         tools:layout="@layout/fragment_save_or_update">
         <action
             android:id="@+id/action_saveOrUpdateFragment_to_noteFragment"
-            app:destination="@id/noteFragment" />
 
+            app:destination="@id/noteFragment" />
 
         <argument
             android:name="note"
@@ -30,4 +30,5 @@
             app:argType="com.example.notesapp.model.Note"
             app:nullable="true" />
     </fragment>
+
 </navigation>

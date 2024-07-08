@@ -3,11 +3,15 @@ package com.example.notesapp.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notesapp.R
 import com.example.notesapp.databinding.NoteItemLayoutBinding
+import com.example.notesapp.fragments.NoteFragmentDirections
 import com.example.notesapp.model.Note
+import com.example.notesapp.utils.hideKeyboard
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonVisitor
@@ -51,13 +55,21 @@ class RvNotesAdapter : ListAdapter<Note, RvNotesAdapter.NotesViewHolder>(DiffUti
                 date.text = note.date
                 parent.setCardBackgroundColor(note.color)
 
-
                 itemView.setOnClickListener {
+                    val action =
+                        NoteFragmentDirections.actionNoteFragmentToSaveOrUpdateFragment(note)
+                    val extras = FragmentNavigatorExtras(parent to "recyclerView_${note.id}")
+                    it.hideKeyboard()
+                    Navigation.findNavController(it).navigate(action, extras)
 
                 }
 
                 content.setOnClickListener {
-
+                    val action =
+                        NoteFragmentDirections.actionNoteFragmentToSaveOrUpdateFragment(note)
+                    val extras = FragmentNavigatorExtras(parent to "recyclerView_${note.id}")
+                    it.hideKeyboard()
+                    Navigation.findNavController(it).navigate(action, extras)
                 }
             }
 

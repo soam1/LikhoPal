@@ -178,6 +178,11 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
         itemTouchHelper.attachToRecyclerView(rvNote)
 
+
+
+
+
+
     }
 
     private fun observerDataChanges() {
