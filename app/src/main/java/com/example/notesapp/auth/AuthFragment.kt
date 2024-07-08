@@ -45,13 +45,12 @@ class AuthFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
 
 
-        // Check if user is already signed in
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser != null) {
-            // User is signed in, navigate to NoteFragment
-            findNavController().navigate(R.id.action_authFragment_to_noteFragment)
-        }
-
+//        // Check if user is already signed in
+//        val currentUser = firebaseAuth.currentUser
+//        if (currentUser != null) {
+//            // User is signed in, navigate to NoteFragment
+//            findNavController().navigate(R.id.action_authFragment_to_noteFragment)
+//        }
 
 
         binding.signInButton.setOnClickListener {
