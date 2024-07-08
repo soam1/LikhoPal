@@ -11,8 +11,8 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -69,9 +69,12 @@ class NoteFragment : Fragment(R.layout.fragment_note) {
         }
         noteBinding.signOutButton.setOnClickListener {
             Firebase.auth.signOut()
-            findNavController().navigate(R.id.action_noteFragment_to_authFragment)
-//            val fragmentManager = requireActivity().supportFragmentManager
-//            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            findNavController().navigate(
+                R.id.action_noteFragment_to_authFragment, null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.noteFragment, true)
+                    .build()
+            )
         }
 
         noteBinding.addNoteFab.setOnClickListener {
